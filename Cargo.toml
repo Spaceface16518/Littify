@@ -1,0 +1,18 @@
+[package]
+name = "littify"
+version = "1.1.3"
+authors = ["Amrit Rathie <tirma.eithar@gmail.com>"]
+autobins = false
+
+[dependencies]
+littify-core = { path = "./littify-core", version = "1" }
+
+[workspace]
+members = [
+    "littify-core",
+    "littify-repl"
+]
+
+[[bin]]
+name = "littify"
+path = "src/main.rs"
