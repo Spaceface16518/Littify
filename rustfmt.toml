@@ -1,0 +1,11 @@
+max_width = 80
+reorder_imports = true
+reorder_modules = true
+wrap_comments = true
+merge_imports = true
+format_macro_bodies = true
+format_macro_matchers = true
+format_strings = true
+fn_single_line = true
+normalize_doc_attributes = true
+use_small_heuristics = "Max"
