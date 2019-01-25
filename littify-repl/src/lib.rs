@@ -15,7 +15,7 @@ pub fn repl<I: BufRead, O: Write>(input: I, output: &mut O) {
                 writeln!(output, "{}", s);
             }
             CycleCommand::Exit(e) => {
-                writeln!(output, "{}", e);
+                writeln!(output, "{}", e).expect("Could not write to output");
                 break;
             }
         }
