@@ -133,20 +133,20 @@ pub fn littify_string<S: ToString>(orig: S) -> String {
         return orig.clone();
     } else {
         let mut b = false;
-        let mut o_string = String::new();
-        for c in orig.chars() {
-            o_string.push(if c.is_alphabetic() {
-                b = !b;
-                if b {
-                    c.to_ascii_lowercase()
+        orig.chars()
+            .map(|c| {
+                if c.is_alphabetic() {
+                    b = !b;
+                    if b {
+                        c.to_ascii_lowercase()
+                    } else {
+                        c.to_ascii_uppercase()
+                    }
                 } else {
-                    c.to_ascii_uppercase()
+                    c
                 }
-            } else {
-                c
             })
-        }
-        o_string
+            .collect::<String>()
     }
 }
 
@@ -235,6 +235,7 @@ pub mod tests {
 
     // #[bench]
     // fn bench_littify_string_large_string_lowercase(b: &mut Bencher) {
-    //     b.iter(|| littify_string("asdfasdfasdfasdfasdfasdfadfasdfasfasdfasdfasdfadfadfasdfsadfasdfadfadsfasdfasdfasdfadsfasdfasdfasdfasdfasdfadsfasdfasdfadfasdfasdfafsdfadsfasdfasdfasdfasdfasdfasdfasdfasdfasdf"));
+    //     b.iter(||
+    // littify_string("asdfasdfasdfasdfasdfasdfadfasdfasfasdfasdfasdfadfadfasdfsadfasdfadfadsfasdfasdfasdfadsfasdfasdfasdfasdfasdfadsfasdfasdfadfasdfasdfafsdfadsfasdfasdfasdfasdfasdfasdfasdfasdfasdf"));
     // }
 }
