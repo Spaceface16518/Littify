@@ -5,7 +5,7 @@ use std::env::args;
 fn main() {
     println!(
         "{}",
-        littify_string(args().skip(1).collect::<Vec<String>>().process_args())
+        littify_string(args().skip(1).process_args())
             .as_str()
     );
 }
