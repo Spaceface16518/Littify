@@ -5,7 +5,7 @@ authors = ["Amrit Rathie <tirma.eithar@gmail.com>"]
 autobins = false
 
 [dependencies]
-littify-core = { path = "./littify-core", version = "1" }
+littify-core = { path = "./littify-core" }
 
 [workspace]
 members = [

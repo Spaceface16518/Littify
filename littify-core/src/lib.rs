@@ -3,7 +3,7 @@ extern crate rand;
 // #[cfg(test)]
 // extern crate test;
 
-use std::env::args;
+use std::{env::args, iter::IntoIterator};
 
 /// This is the old `main` method from when this program was just a binary
 /// application without a library. Now it is based on connection to a library,
@@ -93,6 +93,22 @@ pub fn process_args<S: ToString>(argv: Vec<S>) -> String {
     argv.iter().map(|s| s.to_string()).collect::<Vec<String>>().join(" ")
 }
 
+pub trait ProcessArgsExt<S> {
+    fn process_args(self) -> String;
+}
+
+impl<S: IntoIterator> ProcessArgsExt<S> for S
+where
+    S::Item: ToString,
+{
+    fn process_args(self) -> String {
+        self.into_iter()
+            .map(|s| s.to_string())
+            .collect::<Vec<String>>()
+            .join(" ")
+    }
+}
+
 /// "littify" a string. This method takes `S where S: ToString` and returns a
 /// `String` that is the original, but littified. Littifying a string includes
 /// all of the following. There are some small nuances, but these three things
@@ -132,9 +148,15 @@ pub fn littify_string<S: ToString>(orig: S) -> String {
     if orig.is_empty() {
         return orig.clone();
     } else {
+        // Start with a lowercase letter (flip this boolean to switch that)
         let mut b = false;
+
+        // Iterate of individual characters
         orig.chars()
             .map(|c| {
+                // Technically the `to_ascii_whatever` functions will ignore
+                // non-ASCII characters, but this is necessary so that we don't
+                // flip the flag for non-alphebetic characters
                 if c.is_alphabetic() {
                     b = !b;
                     if b {

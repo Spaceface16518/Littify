@@ -1,6 +1,6 @@
 [package]
 name = "littify-core"
-version = "1.5.3"
+version = "1.6.0"
 authors = ["Spaceface16518"]
 edition = "2018"
 
