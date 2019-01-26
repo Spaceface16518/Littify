@@ -1,6 +1,6 @@
 [package]
 name = "littify"
-version = "1.1.3"
+version = "1.1.4"
 authors = ["Amrit Rathie <tirma.eithar@gmail.com>"]
 autobins = false
 
