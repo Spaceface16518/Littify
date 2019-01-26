@@ -12,7 +12,7 @@ pub fn repl<I: BufRead, O: Write>(input: I, output: &mut O) {
     for line in input.lines() {
         match repl_cycle(line.unwrap()) {
             CycleCommand::Continue(s) => {
-                writeln!(output, "{}", s);
+                writeln!(output, "{}", s).expect("Could not write to output");
             }
             CycleCommand::Exit(e) => {
                 writeln!(output, "{}", e).expect("Could not write to output");
