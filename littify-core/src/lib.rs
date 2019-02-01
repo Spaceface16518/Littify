@@ -155,7 +155,7 @@ impl<S: ToString> LittifyStringExt for S {
         let orig = self.to_string();
         if orig.is_empty() {
             // COMBAK: is this edge case necessary?
-            return orig
+            return orig;
         } else {
             // Start with a lowercase letter (flip this boolean to switch that)
             let mut b = false;
