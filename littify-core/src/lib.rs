@@ -143,32 +143,41 @@ where
 /// ```shell
 /// cargo test littify_string -p littify-core
 /// ```
-pub fn littify_string<S: ToString>(orig: S) -> String {
-    let orig = orig.to_string();
-    if orig.is_empty() {
-        return orig.clone();
-    } else {
-        // Start with a lowercase letter (flip this boolean to switch that)
-        let mut b = false;
+#[deprecated]
+pub fn littify_string<S: ToString>(orig: S) -> String { orig.littify() }
 
-        // Iterate of individual characters
-        orig.chars()
-            .map(|c| {
-                // Technically the `to_ascii_whatever` functions will ignore
-                // non-ASCII characters, but this is necessary so that we don't
-                // flip the flag for non-alphebetic characters
-                if c.is_alphabetic() {
-                    b = !b;
-                    if b {
-                        c.to_ascii_lowercase()
+pub trait LittifyStringExt {
+    fn littify(&self) -> String;
+}
+
+impl<S: ToString> LittifyStringExt for S {
+    fn littify(&self) -> String {
+        let orig = self.to_string();
+        if orig.is_empty() {
+            return orig.clone();
+        } else {
+            // Start with a lowercase letter (flip this boolean to switch that)
+            let mut b = false;
+
+            // Iterate of individual characters
+            orig.chars()
+                .map(|c| {
+                    // Technically the `to_ascii_whatever` functions will ignore
+                    // non-ASCII characters, but this is necessary so that we
+                    // don't flip the flag for non-alphebetic characters
+                    if c.is_alphabetic() {
+                        b = !b;
+                        if b {
+                            c.to_ascii_lowercase()
+                        } else {
+                            c.to_ascii_uppercase()
+                        }
                     } else {
-                        c.to_ascii_uppercase()
+                        c
                     }
-                } else {
-                    c
-                }
-            })
-            .collect::<String>()
+                })
+                .collect::<String>()
+        }
     }
 }
 
@@ -188,6 +197,27 @@ pub mod tests {
         let orig = "This is s0me test text with s0me $yMb0L&".to_string();
         assert_eq!(
             littify_string(orig),
+            "tHiS iS s0Me TeSt TeXt WiTh S0mE $yMb0L&".to_string()
+        );
+    }
+
+    #[test]
+    fn test_littify_string_ext_no_input() {
+        let orig = String::new();
+        assert_eq!(orig.littify(), String::new());
+    }
+
+    #[test]
+    fn test_littify_string_ext() {
+        let orig = "This is some test text".to_string();
+        assert_eq!(orig.littify(), "tHiS iS sOmE tEsT tExT".to_string());
+    }
+
+    #[test]
+    fn test_ext_with_symbols() {
+        let orig = "This is s0me test text with s0me $yMb0L&".to_string();
+        assert_eq!(
+            orig.littify(),
             "tHiS iS s0Me TeSt TeXt WiTh S0mE $yMb0L&".to_string()
         );
     }
