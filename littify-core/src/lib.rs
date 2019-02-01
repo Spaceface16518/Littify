@@ -154,7 +154,8 @@ impl<S: ToString> LittifyStringExt for S {
     fn littify(&self) -> String {
         let orig = self.to_string();
         if orig.is_empty() {
-            return orig.clone();
+            // COMBAK: is this edge case necessary?
+            return orig
         } else {
             // Start with a lowercase letter (flip this boolean to switch that)
             let mut b = false;
@@ -176,7 +177,7 @@ impl<S: ToString> LittifyStringExt for S {
                         c
                     }
                 })
-                .collect::<String>()
+                .collect()
         }
     }
 }
